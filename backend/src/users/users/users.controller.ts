@@ -1,34 +1,48 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Res, UseGuards, Req } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { Request, Response } from 'express';
+import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcrypt';
 
-@Controller('users')
+@Controller('api/users/')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+  private readonly usersService: UsersService,
+  private jwtService: JwtService
+  ) {}
 
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+  @Post('sign-up')
+  async signUp(@Body() body: any) {
+    const hashedPassword = await bcrypt.hash(body.password, 12);
+    const user = this.usersService.signUp({
+      username: body.username,
+      email: body.email,
+      password: hashedPassword,
+    });
+    delete (await user).password;
+    return user;
   }
 
-  @Get()
-  findAll() {
-    return this.usersService.findAll();
+  // @Post('sign-up')
+  // async signUp(@Body() body: any) {
+  //   return this.appService.signUp(body.username, body.email, body.email);
+  // }
+
+  @Post('sign-in')
+  async signIn(@Body() body: any, @Res({ passthrough: true }) response: Response) {
+    console.log('sign-in');
+    return this.usersService.signIn(body.email, body.password, response);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
+  @UseGuards() // Check if the user is logged in
+  @Get('getCurrentUser')
+  async getUser(@Req() request: Request) {
+    return this.usersService.getOneUser(request);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+  @Post('logout')
+  async logout(@Res({ passthrough: true }) response: Response) {
+    response.clearCookie('jwt');
+    return { message: 'successful logout' }
   }
 }
