@@ -30,14 +30,7 @@ export class LoginComponent implements OnInit {
     console.log(this.form.getRawValue());
     this.userService.signIn(this.form.getRawValue().email, this.form.getRawValue().password).subscribe(res => {
       console.log(res.success);
-      // res.success == true ? this.toastrService.success('', 'Connexion réussite !') : this.toastrService.error('', 'La connexion a échoué');
-
-      if (res.success == true) {
-        this.toastrService.success('', 'Connexion réussite !')
-        this.router.navigate(['/home']);
-      } else {
-        this.toastrService.error('', 'Email ou Mot de passe incorrect !')
-      }
+      res.success == true ? this.toastrService.success('', 'Connexion réussite !') && this.router.navigate(['/home']): this.toastrService.error('', 'La connexion a échoué');
     });
   }
 }

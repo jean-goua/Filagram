@@ -17,7 +17,11 @@ export class UserService {
     return this.http.get(this.api + 'user');
   }
 
-  public signIn(email: string, password: string): Observable<{success: boolean}> {
-    return this.http.post<{success: boolean}>(this.api + 'users/sign-in', {email, password});
+  public signIn(email: string, password: string): Observable<{ success: boolean }> {
+    return this.http.post<{ success: boolean }>(this.api + 'users/sign-in', { email, password });
+  }
+
+  public signUp(username: string, email: string, password: string): Observable<{ success: boolean }> {
+    return this.http.post<{ success: boolean }>(this.api + 'users/sign-up', { username, email, password });
   }
 }
