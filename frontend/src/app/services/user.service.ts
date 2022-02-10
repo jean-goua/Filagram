@@ -16,4 +16,8 @@ export class UserService {
     console.log(this.api);
     return this.http.get(this.api + 'user');
   }
+
+  public signIn(email: string, password: string): Observable<{success: boolean}> {
+    return this.http.post<{success: boolean}>(this.api + 'users/sign-in', {email, password});
+  }
 }

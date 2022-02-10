@@ -2,13 +2,13 @@
 	<div class="container-left">
 		<div class="auth-content">
 			<h1>Authentification</h1>
-			<form>
+			<form [formGroup]="form" (submit)="submit()">
 				<div class="input-field">
-					<input id="email" type="text" required>
+					<input formControlName="email" id="email" type="email" required>
 					<label for="email">Email</label>
 				</div>
 				<div class="input-field">
-					<input id="password" type="password" required>
+					<input formControlName="password" id="password" type="password" required>
 					<label for="password">Mot de passe</label>
 				</div>
 				<div class="button-form">

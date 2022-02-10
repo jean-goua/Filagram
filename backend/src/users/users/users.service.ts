@@ -4,13 +4,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
+import { resolve } from 'path/posix';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     private jwtService: JwtService
-    ) { }
+  ) { }
 
   async signUp(data: any): Promise<User> {
     console.log(data);
@@ -39,16 +40,23 @@ export class UsersService {
     return user;
   }
 
-  async signIn(email: string, password: string, response: any): Promise<User> {
-    const user = await this.userRepository.findOne({ email: email });
+  async signIn(email: string, password: string, response: any): Promise<any> {
+    return new Promise<any>(async (resolve) => {
+      try {
+        const user = await this.userRepository.findOne({ email: email });
 
-    // Check if the user exist and if it's a wrong password
-    if (!user || !await bcrypt.compare(password, user.password)) throw new BadRequestException('Invalid credentials');
+        // Check if the user exist and if it's a wrong password
+        if (!user || !await bcrypt.compare(password, user.password)) resolve(false);
 
-    const jwt = await this.jwtService.signAsync({ id: user.id });
-    response.cookie('jwt', jwt, { httpOnly: true });
+        console.log(user);
+        const jwt = await this.jwtService.signAsync({ id: user.id });
+        response.cookie('jwt', jwt, { httpOnly: true });
 
-    delete user.password;
-    return user;
+        resolve(true);
+      } catch (e) {
+        console.log(e);
+        resolve(false);
+      }
+    });
   }
 }

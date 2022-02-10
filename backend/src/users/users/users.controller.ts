@@ -30,8 +30,7 @@ export class UsersController {
 
   @Post('sign-in')
   async signIn(@Body() body: any, @Res({ passthrough: true }) response: Response) {
-    console.log('sign-in');
-    return this.usersService.signIn(body.email, body.password, response);
+    return await this.usersService.signIn(body.email, body.password, response) ? {success: true} : {success: false};
   }
 
   @UseGuards() // Check if the user is logged in
