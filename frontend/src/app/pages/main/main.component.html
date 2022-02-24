@@ -1,3 +1,59 @@
-<p>main works!</p>
-<button (click)="getUser()">Info user</button>
-<button (click)="logout()">logout</button>
+<div class="main">
+	<div class="col-7 text-center mt-4 ps-5 pe-5">
+		<div class="d-flex">
+			<h1>Actualités</h1>
+			<div class="float-end">
+				<nav class="navbar navbar-light bg-light">
+					<form class="form-inline">
+						<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+						<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+					</form>
+				</nav>
+			</div>
+		</div>
+
+		<div class="mt-5">
+			<div class="card text-center">
+				<div class="card-header">
+					Axelbr17
+				</div>
+				<div class="card-body">
+					<h5 class="card-title">Special title treatment</h5>
+					<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+					<a href="#" class="btn btn-primary">Go somewhere</a>
+				</div>
+				<div class="card-footer text-muted">
+					<i class="fa-solid fa-heart text-danger"></i>
+					<i class="fa-solid fa-comment ms-1"></i>
+					<span class="ms-1">10 commentaires</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-5" *ngIf="user">
+		<h1 class="text-center mt-4">Infos user</h1>
+		<h4>{{user.username}}</h4>
+		<button class="btn btn-primary" (click)="getUser()">Info user</button>
+		<button class="btn btn-primary" (click)="logout()">logout</button>
+		<div class="d-flex">
+			<div class="col alert alert-primary ms-2 me-2">
+				<div class="d-flex">
+					<i class="fa-solid fa-heart fa-2x me-2"></i>
+					<h4 class="text">189 follow</h4>
+				</div>
+			</div>
+			<div class="col alert alert-primary ms-2 me-2">
+				<div class="d-flex">
+					<i class="fa-solid fa-heart fa-2x me-2"></i>
+					<h4 class="text">90 followers</h4>
+				</div>
+			</div>
+			<div class="col alert alert-primary ms-2 me-2">
+				<div class="d-flex">
+					<i class="fa-solid fa-heart fa-2x me-2"></i>
+					<h4 class="text">10 posts</h4>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

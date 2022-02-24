@@ -10,11 +10,18 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class MainComponent implements OnInit {
 
+  user: any;
+
   constructor(
-  private route: Router,
-  private userService: UserService,
-  private toastrService: ToastrService
-  ) { }
+    private route: Router,
+    private userService: UserService,
+    private toastrService: ToastrService
+  ) {
+    this.userService.getUser().subscribe(user => {
+      console.log(user);
+      this.user = user;
+    });
+  }
 
   ngOnInit(): void {
   }
