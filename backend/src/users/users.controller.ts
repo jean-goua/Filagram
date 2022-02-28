@@ -39,6 +39,7 @@ export class UsersController {
   @UseGuards() // Check if the user is logged in
   @Post('logout')
   async logout(@Res({ passthrough: true }) response: Response) {
+    console.log('logout');
     response.clearCookie('jwt');
     return { success: true }
   }

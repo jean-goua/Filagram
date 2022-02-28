@@ -13,4 +13,16 @@ export class User {
 
     @Column()
     password: string;
+
+    @Column({ default: '' })
+    birthdate: string;
+
+    @Column()
+    profilePicture: string;
+
+    @Column()
+    background: string;
+
+    @Column()
+    description: string;
 }
